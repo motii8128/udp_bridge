@@ -1,20 +1,36 @@
-name: Rust
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-env:
-  CARGO_TERM_COLOR: always
+name: ROS build test
+on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-20.04
-
+    runs-on: ubuntu-22.04
+    env:
+      CATKIN_WS: /home/runner/work/ros2_ws
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
+    - uses: actions/checkout@v2
+
+    - name: Setup ROS
+      uses: ros-tooling/setup-ros@v0.6
+      with:
+        required-ros-distributions: humble
+
+    - name: Init workspace
+      run: |
+        source /opt/ros/humble/setup.bash
+        mkdir -p ${CATKIN_WS}/src
+        ln -s ${GITHUB_WORKSPACE} ${CATKIN_WS}/src/
+
+    - name: pre build
+      run: |
+        source /opt/ros/humble/setup.bash
+        cd ${CATKIN_WS}/src/swerve_driver
+        git submodule update --init --recursive
+        rosdep update
+        rosdep install -i -y --from-paths ./
+
+    - name: build
+      run: |
+        source /opt/ros/humble/setup.bash
+        cd ${CATKIN_WS}
+        colcon test
+        
