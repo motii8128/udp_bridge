@@ -23,7 +23,7 @@ jobs:
     - name: pre build
       run: |
         source /opt/ros/humble/setup.bash
-        cd ${CATKIN_WS}/src/swerve_driver
+        cd ${CATKIN_WS}/src/udp_bridge
         git submodule update --init --recursive
         rosdep update
         rosdep install -i -y --from-paths ./
