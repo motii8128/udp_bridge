@@ -10,9 +10,9 @@ async fn main()->Result<(), DynError>
 
     let node = context.create_node("reciever", None, Default::default())?;
 
-    let publisher = node.create_publisher::<std_msgs::msg::Float32>("test", None)?;
+    let publisher = node.create_publisher::<std_msgs::msg::Float32>("reciever_topic", None)?;
 
-    let logger = Logger::new("turtle_test");
+    let logger = Logger::new("reciever");
 
     let addr = "127.0.0.1:8080";
 

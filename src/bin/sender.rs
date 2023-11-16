@@ -9,9 +9,9 @@ async fn main()->Result<(), DynError>
 
     let node = context.create_node("sender", None, Default::default())?;
 
-    let subscriber = node.create_subscriber::<std_msgs::msg::Float32>("test_topic", None)?;
+    let subscriber = node.create_subscriber::<std_msgs::msg::Float32>("sender_topic", None)?;
 
-    let logger = Logger::new("turtle_test");
+    let logger = Logger::new("sender");
 
     let sender_addr = "127.0.0.1:34543";
     let reciever_addr = "127.0.0.1:8080";
